@@ -19,17 +19,14 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   void initState() {
-    print("init state");
     _loadDiscoveryDocument();
     super.initState();
   }
 
   Future<void> _loadDiscoveryDocument() async {
     try {
-      print("intentand");
       await OpenIdConnect.initalizeEncryption("1234567890123456");
       final config = await OpenIdConnect.getConfiguration(defaultDiscoveryUrl);
-      print("tengo");
       setState(() {
         LogService.info(config.issuer);
         discoveryDocument = config;
@@ -89,11 +86,7 @@ class _AuthPageState extends State<AuthPage> {
       children: [
         isLoading
             ? const CircularProgressIndicator()
-            : TextButton.icon(
-              onPressed: _authenticate,
-              icon: const Icon(Icons.login),
-              label: const Text("Login with Keycloak"),
-            ),
+            : Text(""),
         if (identity != null)
           Column(
             children: [
