@@ -1,5 +1,5 @@
 const defaultDiscoveryUrl =
-    "http://localhost:9090/realms/guayabee/.well-known/openid-configuration";
+    "http://192.168.1.135:9090/realms/guayabee/.well-known/openid-configuration";
 const defaultClientId = "guayabee-core";
 const defaultRedirectUrl = "http://localhost:49430/callback.html";
 final defaultscopes = [
