@@ -48,6 +48,7 @@ dev_dependencies:
   get: ^4.7.2
   openidconnect: ^1.0.36
   google_fonts: ^6.2.1
+  logger: ^2.5.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guayabee_app/components/scaffold/menu_item.dart';
+import 'package:guayabee_app/pages/auth_page/auth_page.dart';
 import 'package:guayabee_app/pages/home_page/home_page.dart';
 import 'package:guayabee_app/pages/profile_page/profile_page.dart';
 
@@ -26,7 +27,7 @@ class _CustomScaffoldState extends State<CustomScaffold> {
         icon: Icons.person,
         widget: const ProfilePage(),
       ),
-      MenuItem(name: "Login", icon: Icons.login, widget: const ProfilePage()),
+      MenuItem(name: "Login", icon: Icons.login, widget: const AuthPage()),
     ];
     _selectedPage = _items[_selectedIndex].widget;
   }
