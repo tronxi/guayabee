@@ -1,0 +1,28 @@
+meta {
+  name: token
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:9090/realms/guayabee/protocol/openid-connect/token
+  body: formUrlEncoded
+  auth: none
+}
+
+headers {
+  Content-Type: application/x-www-form-urlencoded
+}
+
+body:form-urlencoded {
+  client_id: guayabee-core
+  username: sergio
+  password: admin
+  grant_type: password
+}
+
+script:post-response {
+  const response = res.getBody();
+  bru.setEnvVar("token",response.access_token);
+  
+}
