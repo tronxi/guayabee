@@ -85,4 +85,11 @@ public class CommunityRepositoryPostgres implements CommunityRepository {
         userCommunity.setUserId(userId);
         userCommunityRepositoryJPA.save(userCommunity);
     }
+
+    @Override
+    public void leaveCommunity(Community community, String userId) {
+        CommunityEntity communityEntity = communityEntityMapper.toEntity(community);
+        Optional<UserCommunityEntity> maybeUserCommunityEntity = userCommunityRepositoryJPA.findByCommunityEntityAndUserId(communityEntity, userId);
+        maybeUserCommunityEntity.ifPresent(userCommunityRepositoryJPA::delete);
+    }
 }

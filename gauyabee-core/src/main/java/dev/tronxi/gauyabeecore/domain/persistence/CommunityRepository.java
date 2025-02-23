@@ -23,4 +23,5 @@ public interface CommunityRepository {
     Optional<Community> findByCommunityAndUserId(Community community, String userId);
 
     void joinCommunity(Community community, String userId);
+    void leaveCommunity(Community community, String userId);
 }

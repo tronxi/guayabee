@@ -4,4 +4,8 @@ public record Community(Long id, String name, String description, String imageUr
     public Community incrementMembers() {
         return new Community(id, name, description, imageUrl, members + 1);
     }
+
+    public Community decrementMembers() {
+        return new Community(id, name, description, imageUrl, members - 1);
+    }
 }

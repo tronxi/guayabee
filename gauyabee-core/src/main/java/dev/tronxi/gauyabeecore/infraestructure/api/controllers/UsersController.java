@@ -1,7 +1,8 @@
 package dev.tronxi.gauyabeecore.infraestructure.api.controllers;
 
 import dev.tronxi.gauyabeecore.domain.models.Community;
-import dev.tronxi.gauyabeecore.domain.usecases.JoinToCommunityUseCase;
+import dev.tronxi.gauyabeecore.domain.usecases.JoinCommunityUseCase;
+import dev.tronxi.gauyabeecore.domain.usecases.LeaveCommunityUseCase;
 import dev.tronxi.gauyabeecore.domain.usecases.RetrieveCommunityUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,14 +16,15 @@ import java.util.List;
 @RequestMapping("users")
 public class UsersController {
 
-    private final JoinToCommunityUseCase joinToCommunityUseCase;
-
+    private final JoinCommunityUseCase joinCommunityUseCase;
     private final RetrieveCommunityUseCase retrieveCommunityUseCase;
+    private final LeaveCommunityUseCase leaveCommunityUseCase;
 
 
-    public UsersController(JoinToCommunityUseCase joinToCommunityUseCase, RetrieveCommunityUseCase retrieveCommunityUseCase) {
-        this.joinToCommunityUseCase = joinToCommunityUseCase;
+    public UsersController(JoinCommunityUseCase joinCommunityUseCase, RetrieveCommunityUseCase retrieveCommunityUseCase, LeaveCommunityUseCase leaveCommunityUseCase) {
+        this.joinCommunityUseCase = joinCommunityUseCase;
         this.retrieveCommunityUseCase = retrieveCommunityUseCase;
+        this.leaveCommunityUseCase = leaveCommunityUseCase;
     }
 
 
@@ -31,7 +33,16 @@ public class UsersController {
     public ResponseEntity<Void> join(Principal principal, @PathVariable Long communityId) {
         JwtAuthenticationToken token = (JwtAuthenticationToken) principal;
         String userId = token.getTokenAttributes().get("sub").toString();
-        joinToCommunityUseCase.joinToCommunity(communityId, userId);
+        joinCommunityUseCase.joinCommunity(communityId, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/communities/{communityId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> leave(Principal principal, @PathVariable Long communityId) {
+        JwtAuthenticationToken token = (JwtAuthenticationToken) principal;
+        String userId = token.getTokenAttributes().get("sub").toString();
+        leaveCommunityUseCase.leaveCommunity(communityId, userId);
         return ResponseEntity.ok().build();
     }
 

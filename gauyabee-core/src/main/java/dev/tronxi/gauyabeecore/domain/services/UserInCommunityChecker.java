@@ -14,7 +14,13 @@ public class UserInCommunityChecker {
         this.communityRepository = communityRepository;
     }
 
-    public void checkOrThrow(Community community, String userId) {
+    public void validateMembershipOrThrow(Community community, String userId) {
+        if (communityRepository.findByCommunityAndUserId(community, userId).isPresent()) {
+            throw new DomainException("User: " + userId + " already belongs to the community: " + community.id());
+        }
+    }
+
+    public void validateNotMemberOrThrow(Community community, String userId) {
         if (communityRepository.findByCommunityAndUserId(community, userId).isEmpty()) {
             throw new DomainException("User: " + userId + " does not belong to the community: " + community.id());
         }

@@ -1,12 +1,12 @@
 meta {
-  name: retreive all user comunity
+  name: leave community
   type: http
-  seq: 1
+  seq: 3
 }
 
-get {
-  url: http://localhost:8080/users/communities
-  body: json
+delete {
+  url: http://localhost:8080/users/communities/1
+  body: none
   auth: none
 }
 

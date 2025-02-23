@@ -7,23 +7,22 @@ import dev.tronxi.gauyabeecore.domain.services.UserInCommunityChecker;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JoinToCommunityUseCase {
+public class LeaveCommunityUseCase {
     private final CommunityRepository communityRepository;
     private final CommunityRetriever communityRetriever;
     private final UserInCommunityChecker userInCommunityChecker;
 
-    public JoinToCommunityUseCase(CommunityRepository communityRepository, CommunityRetriever communityRetriever, UserInCommunityChecker userInCommunityChecker) {
+    public LeaveCommunityUseCase(CommunityRepository communityRepository, CommunityRetriever communityRetriever, UserInCommunityChecker userInCommunityChecker) {
         this.communityRepository = communityRepository;
         this.communityRetriever = communityRetriever;
         this.userInCommunityChecker = userInCommunityChecker;
     }
 
-    public void joinToCommunity(Long communityId, String userId) {
+    public void leaveCommunity(Long communityId, String userId) {
         Community community = communityRetriever.retrieveCommunityByIdOrThrow(communityId);
-        //todo review checkOrThrow
-        userInCommunityChecker.checkOrThrow(community, userId);
-        Community communityWithNewMember = community.incrementMembers();
-        Community updatedCommunity = communityRepository.update(communityWithNewMember);
-        communityRepository.joinCommunity(updatedCommunity, userId);
+        userInCommunityChecker.validateNotMemberOrThrow(community, userId);
+        Community communityWithoutNewMember = community.decrementMembers();
+        Community updatedCommunity = communityRepository.update(communityWithoutNewMember);
+        communityRepository.leaveCommunity(updatedCommunity, userId);
     }
 }
