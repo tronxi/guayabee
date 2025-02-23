@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:guayabee_app/shared/colors.dart';
-import 'package:guayabee_app/shared/routes.dart';
+
+import 'components/scaffold/custom_scaffold.dart';
 
 const appName = "Guayabee";
 
@@ -18,13 +18,19 @@ class MyApp extends StatelessWidget {
       title: appName,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Theme.of(context).primaryCustomColor,
+        colorScheme: ColorScheme(
+          brightness: Brightness.dark,
+          primary: const Color(0xFFFFB300),
+          onPrimary: Colors.white,
+          secondary: const Color(0xFFFFA000),
+          onSecondary: Colors.white,
+          surface: const Color(0xFF2C2C2C),
+          onSurface: Colors.white,
+          error: Colors.redAccent,
+          onError: Colors.white,
         ),
-        useMaterial3: true,
       ),
-      initialRoute: Routes.mainRoute,
-      getPages: Routes.appRoutes(),
+      home: CustomScaffold(),
     );
   }
 }
