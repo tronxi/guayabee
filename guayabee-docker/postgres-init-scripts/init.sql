@@ -1,0 +1,5 @@
+CREATE DATABASE guayabee;
+GRANT ALL PRIVILEGES ON DATABASE guayabee TO guayabeeuser;
+
+CREATE DATABASE keycloak;
+GRANT ALL PRIVILEGES ON DATABASE keycloak TO guayabeeuser;

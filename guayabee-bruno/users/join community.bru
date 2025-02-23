@@ -1,0 +1,23 @@
+meta {
+  name: join community
+  type: http
+  seq: 2
+}
+
+put {
+  url: http://localhost:8080/users/communities/52
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+    "name": "secondd",
+    "description": "des",
+    "imageUrl": "url"
+  }
+}

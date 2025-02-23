@@ -1,4 +1,4 @@
-package dev.tronxi.gauyabeecore.security;
+package dev.tronxi.gauyabeecore.config.security;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package dev.tronxi.gauyabeecore.security;
+package dev.tronxi.gauyabeecore.config.security;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -32,7 +32,6 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
     Collection<GrantedAuthority> authorities = Stream.concat(
         jwtGrantedAuthoritiesConverter.convert(jwt).stream(),
         extractResourceRoles(jwt).stream()).collect(Collectors.toSet());
-    System.out.println(authorities);
     return new JwtAuthenticationToken(jwt, authorities, getPrincipalClaimName(jwt));
   }
 
