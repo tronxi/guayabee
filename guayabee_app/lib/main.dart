@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'components/scaffold/custom_scaffold.dart';
 
 const appName = "Guayabee";
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: "environments/.env");
   runApp(const MyApp());
 }
 

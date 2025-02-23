@@ -3,7 +3,7 @@ import 'package:logger/logger.dart';
 class LogService {
   static final Logger _logger = Logger(
     printer: PrettyPrinter(
-      methodCount: 2,
+      methodCount: 1,
       errorMethodCount: 8,
       lineLength: 120,
       colors: true,

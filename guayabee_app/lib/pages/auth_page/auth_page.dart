@@ -1,35 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:guayabee_app/config/logger_service.dart';
+import 'package:guayabee_app/services/auth_service.dart';
+import 'package:guayabee_app/services/logger_service.dart';
 import 'package:openidconnect/openidconnect.dart';
-
-import 'credentials.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
 
 class AuthPage extends StatefulWidget {
-  const AuthPage({super.key});
+  final void Function() onLogin;
+
+  const AuthPage({super.key, required this.onLogin});
 
   @override
   State<AuthPage> createState() => _AuthPageState();
 }
 
 class _AuthPageState extends State<AuthPage> {
-  OpenIdConfiguration? discoveryDocument;
-  AuthorizationResponse? identity;
-  Map<String, dynamic>? userInfo;
-  bool isLoading = false;
+  OpenIdConfiguration? _discoveryDocument;
+  AuthorizationResponse? _identity;
+  Map<String, dynamic>? _userInfo;
+  late final AuthService _authService;
 
   @override
   void initState() {
+    _authService = Get.put(AuthService());
     _loadDiscoveryDocument();
     super.initState();
   }
 
   Future<void> _loadDiscoveryDocument() async {
     try {
-      await OpenIdConnect.initalizeEncryption("1234567890123456");
-      final config = await OpenIdConnect.getConfiguration(defaultDiscoveryUrl);
+      final config = await OpenIdConnect.getConfiguration(
+        dotenv.env['DISCOVERY_URL']!,
+      );
       setState(() {
         LogService.info(config.issuer);
-        discoveryDocument = config;
+        _discoveryDocument = config;
       });
     } catch (e) {
       LogService.error("$e");
@@ -38,19 +43,17 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   Future<void> _authenticate() async {
-    if (discoveryDocument == null) {
+    if (_discoveryDocument == null) {
       LogService.error("OpenID Connect Configuration is not loaded.");
       return;
     }
 
-    setState(() => isLoading = true);
-
     try {
       final request = await InteractiveAuthorizationRequest.create(
-        clientId: defaultClientId,
-        redirectUrl: defaultRedirectUrl,
-        scopes: defaultscopes,
-        configuration: discoveryDocument!,
+        clientId: dotenv.env['CLIENT_ID']!,
+        redirectUrl: dotenv.env['REDIRECT_URL']!,
+        scopes: ["openid", "profile", "email", "address", "offline_access"],
+        configuration: _discoveryDocument!,
         autoRefresh: true,
         useWebPopup: true,
       );
@@ -64,49 +67,23 @@ class _AuthPageState extends State<AuthPage> {
       final userInfo = await OpenIdConnect.getUserInfo(
         request: UserInfoRequest(
           accessToken: response!.accessToken,
-          configuration: discoveryDocument!,
+          configuration: _discoveryDocument!,
         ),
       );
 
       setState(() {
-        identity = response;
-        this.userInfo = userInfo;
-        isLoading = false;
+        _identity = response;
+        _userInfo = userInfo;
+        widget.onLogin();
+        _authService.login(_identity!.accessToken);
       });
     } catch (e) {
-      setState(() => isLoading = false);
       LogService.error("$e");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        isLoading
-            ? const CircularProgressIndicator()
-            : Text(""),
-        if (identity != null)
-          Column(
-            children: [
-              Text("Bienvenido, ${userInfo?['name'] ?? 'Usuario'}"),
-              Text(identity?.accessToken ?? "aa"),
-              TextButton.icon(
-                onPressed: _logout,
-                icon: const Icon(Icons.logout),
-                label: const Text("Logout"),
-              ),
-            ],
-          ),
-      ],
-    );
-  }
-
-  Future<void> _logout() async {
-    setState(() {
-      identity = null;
-      userInfo = null;
-    });
+    return const Center(child: CircularProgressIndicator());
   }
 }
