@@ -1,6 +1,6 @@
 services:
-  keycloak-postgresql:
-    container_name: keycloak-postgresql
+  guayabee-postgresql:
+    container_name: guayabee-postgresql
     image: postgres:14.5
     env_file: .env
     ports:
@@ -9,7 +9,7 @@ services:
       - ./postgresql:/var/lib/postgresql/data
       - ./postgres-init-scripts:/docker-entrypoint-initdb.d
     networks:
-      - keycloak-net
+      - guayabee-net
 
   keycloak:
     container_name: keycloak
@@ -18,10 +18,9 @@ services:
     env_file: .env
     ports:
       - "9090:8080"
-    command: start-dev
-#    command: start --proxy edge
+    command: start
     networks:
-      - keycloak-net
+      - guayabee-net
 
 networks:
-  keycloak-net:
+  guayabee-net:
