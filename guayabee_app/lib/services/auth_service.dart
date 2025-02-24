@@ -8,6 +8,12 @@ class AuthService extends GetxService {
     SecureStorageService(),
   );
 
+  Future<AuthService> init() async {
+    String? token = await _secureStorageService.get("accessToken");
+    isLoggedIn.value = token != null;
+    return this;
+  }
+
   Future<void> login(String accessToken) async {
     _secureStorageService.put("accessToken", accessToken).then((_) {
       isLoggedIn.value = true;

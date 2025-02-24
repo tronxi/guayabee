@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'web_url_strategy.dart' if (dart.library.io) 'web_url_strategy_stub.dart';
+import 'package:get_storage/get_storage.dart';
+import 'url_strategy/web_url_strategy.dart'
+    if (dart.library.io) 'url_strategy/web_url_strategy_stub.dart';
 import 'package:get/get.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:guayabee_app/routes.dart';
@@ -13,8 +15,9 @@ void main() async {
   if (kIsWeb) {
     configureWebUrlStrategy();
   }
+  await GetStorage.init();
   await dotenv.load(fileName: "environments/.env");
-  await Get.putAsync<AuthService>(() async => AuthService());
+  await Get.putAsync<AuthService>(() async => AuthService().init());
   runApp(MyApp());
 }
 
