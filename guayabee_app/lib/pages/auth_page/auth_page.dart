@@ -77,7 +77,7 @@ class _AuthPageState extends State<AuthPage> {
       setState(() {
         _identity = response;
         _userInfo = userInfo;
-        _authService.login(_identity!.accessToken).then((_) {
+        _authService.login(_identity!.accessToken, _identity!.refreshToken).then((_) {
           _customScaffoldController.changeIndex(0);
           Routes.change(Routes.homeRoute);
         });

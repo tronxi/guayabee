@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:guayabee_app/components/scaffold/custom_scaffold.dart';
 import 'package:guayabee_app/pages/auth_page/auth_page.dart';
 import 'package:guayabee_app/pages/auth_page/logout_page.dart';
+import 'package:guayabee_app/pages/home_page/home_binding.dart';
 import 'package:guayabee_app/pages/home_page/home_page.dart';
 import 'package:guayabee_app/pages/profile_page/profile_page.dart';
 
@@ -14,6 +15,7 @@ class Routes {
   static appRoutes() => [
     GetPage(
       name: homeRoute,
+      binding: HomeBinding(),
       page: () => const CustomScaffold(body: HomePage()),
       transition: Transition.noTransition,
     ),

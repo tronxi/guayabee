@@ -8,8 +8,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
-      init: HomeController(),
       builder: (controller) {
+        controller.retrieve();
         return Text("Home");
       },
     );

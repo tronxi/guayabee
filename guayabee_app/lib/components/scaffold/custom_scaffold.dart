@@ -23,7 +23,7 @@ class _CustomScaffoldState extends State<CustomScaffold> {
     return Scaffold(
       appBar: isDesktop(context) ? _buildWebAppBar() : null,
       bottomNavigationBar: _buildBottomNavigationBar(),
-      body: widget.body,
+      body: SafeArea(child: widget.body),
     );
   }
 

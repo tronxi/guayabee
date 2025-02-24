@@ -14,15 +14,25 @@ class AuthService extends GetxService {
     return this;
   }
 
-  Future<void> login(String accessToken) async {
-    _secureStorageService.put("accessToken", accessToken).then((_) {
-      isLoggedIn.value = true;
-    });
+  Future<void> login(String accessToken, String? refreshToken) async {
+    if (refreshToken != null) {
+      await _secureStorageService.put("refreshToken", refreshToken);
+    }
+    await _secureStorageService.put("accessToken", accessToken);
+    isLoggedIn.value = true;
   }
 
   Future<void> logout() async {
-    _secureStorageService.remove("accessToken").then((_) {
-      isLoggedIn.value = false;
-    });
+    await _secureStorageService.remove("refreshToken");
+    await _secureStorageService.remove("accessToken");
+    isLoggedIn.value = false;
+  }
+
+  Future<String?> getAccessToken() {
+    return _secureStorageService.get("accessToken");
+  }
+
+  Future<String?> getRefreshToken() {
+    return _secureStorageService.get("refreshToken");
   }
 }

@@ -4,6 +4,7 @@ import dev.tronxi.gauyabeecore.domain.models.Community;
 import dev.tronxi.gauyabeecore.domain.usecases.JoinCommunityUseCase;
 import dev.tronxi.gauyabeecore.domain.usecases.LeaveCommunityUseCase;
 import dev.tronxi.gauyabeecore.domain.usecases.RetrieveCommunityUseCase;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -49,6 +50,9 @@ public class UsersController {
     @GetMapping("/communities")
     public ResponseEntity<List<Community>> retrieveByUserId(Principal principal) {
         JwtAuthenticationToken token = (JwtAuthenticationToken) principal;
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         String userId = token.getTokenAttributes().get("sub").toString();
         return ResponseEntity.ok(retrieveCommunityUseCase.retrieveByUserId(userId));
     }
