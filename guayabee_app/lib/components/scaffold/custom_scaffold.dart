@@ -1,107 +1,80 @@
 import 'package:flutter/material.dart';
-import 'package:guayabee_app/components/scaffold/menu_item.dart';
-import 'package:guayabee_app/pages/auth_page/auth_page.dart';
-import 'package:guayabee_app/pages/auth_page/logout_page.dart';
-import 'package:guayabee_app/pages/home_page/home_page.dart';
-import 'package:guayabee_app/pages/profile_page/profile_page.dart';
 import 'package:get/get.dart';
-import 'package:guayabee_app/services/auth_service.dart';
+import 'package:guayabee_app/components/scaffold/custom_scaffold_controller.dart';
+import 'package:guayabee_app/routes.dart';
 
 class CustomScaffold extends StatefulWidget {
-  const CustomScaffold({super.key});
+  final Widget body;
+
+  const CustomScaffold({super.key, required this.body});
 
   @override
   State<CustomScaffold> createState() => _CustomScaffoldState();
 }
 
 class _CustomScaffoldState extends State<CustomScaffold> {
-  List<MenuItem>? _items;
-  late int _selectedIndex;
-  late Widget _selectedPage;
-  late final AuthService _authService;
-
-  @override
-  void initState() {
-    super.initState();
-    _authService = Get.put(AuthService());
-    _selectedIndex = 0;
-    _selectedPage = const HomePage();
-  }
+  final CustomScaffoldController _customScaffoldController = Get.put(
+    CustomScaffoldController(),
+    permanent: true,
+  );
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: isDesktop(context) ? _buildWebAppBar() : null,
+      bottomNavigationBar: _buildBottomNavigationBar(),
+      body: widget.body,
+    );
+  }
+
+  Widget _buildBottomNavigationBar() {
     return Obx(() {
-      _items = [
-        MenuItem(name: "Main", icon: Icons.home, widget: const HomePage()),
-        MenuItem(
-          name: "Profile",
-          icon: Icons.person,
-          widget: const ProfilePage(),
-        ),
-        if (!_authService.isLoggedIn.value)
-          MenuItem(
-            name: "Login",
-            icon: Icons.login,
-            widget: AuthPage(onLogin: _onLogin),
-          ),
-        if (_authService.isLoggedIn.value)
-          MenuItem(
-            name: "Logout",
-            icon: Icons.logout,
-            widget: LogoutPage(onLogout: _onLogin),
-          ),
-      ];
-      return Scaffold(
-        appBar: isDesktop(context) ? _buildWebAppBar() : null,
-        bottomNavigationBar: _buildBottomNavigationBar(),
-        body: _selectedPage,
+      return BottomNavigationBar(
+        items:
+            _customScaffoldController.items
+                .map(
+                  (item) => BottomNavigationBarItem(
+                    icon: Icon(item.icon),
+                    label: item.name,
+                  ),
+                )
+                .toList(),
+        currentIndex: _customScaffoldController.selectedIndex.value,
+        onTap: _onItemTapped,
       );
     });
   }
 
-  BottomNavigationBar _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      items:
-          _items!
-              .map(
-                (item) => BottomNavigationBarItem(
-                  icon: Icon(item.icon),
-                  label: item.name,
-                ),
-              )
-              .toList(),
-      currentIndex: _selectedIndex,
-      onTap: _onItemTapped,
-    );
+  void _onItemTapped(int index) {
+    _customScaffoldController.changeIndex(index);
+    Routes.change(_getRouteFromIndex(index));
   }
 
   PreferredSizeWidget _buildWebAppBar() {
-    return AppBar(
-      title: const Text('Guayabee'),
-      automaticallyImplyLeading: false,
-      actions:
-          _items!
-              .asMap()
-              .entries
-              .map(
-                (entry) => TextButton(
-                  onPressed: () => _onItemTapped(entry.key),
-                  child: Text(entry.value.name),
-                ),
-              )
-              .toList(),
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(kToolbarHeight),
+      child: Obx(
+        () => AppBar(
+          title: const Text('Guayabee'),
+          automaticallyImplyLeading: false,
+          actions:
+              _customScaffoldController.items
+                  .asMap()
+                  .entries
+                  .map(
+                    (entry) => TextButton(
+                      onPressed: () => _onItemTapped(entry.key),
+                      child: Text(entry.value.name),
+                    ),
+                  )
+                  .toList(),
+        ),
+      ),
     );
   }
 
-  void _onLogin() {
-    _onItemTapped(0);
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      _selectedPage = _items![_selectedIndex].widget;
-    });
+  String _getRouteFromIndex(int index) {
+    return _customScaffoldController.items[index].route;
   }
 
   bool isDesktop(BuildContext context) {

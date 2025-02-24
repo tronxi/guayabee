@@ -1,14 +1,21 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'web_url_strategy.dart' if (dart.library.io) 'web_url_strategy_stub.dart';
 import 'package:get/get.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-import 'components/scaffold/custom_scaffold.dart';
+import 'package:guayabee_app/routes.dart';
+import 'package:guayabee_app/services/auth_service.dart';
 
 const appName = "Guayabee";
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (kIsWeb) {
+    configureWebUrlStrategy();
+  }
   await dotenv.load(fileName: "environments/.env");
-  runApp(const MyApp());
+  await Get.putAsync<AuthService>(() async => AuthService());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -32,7 +39,13 @@ class MyApp extends StatelessWidget {
           onError: Colors.white,
         ),
       ),
-      home: CustomScaffold(),
+      // initialRoute: Routes.homeRoute,
+      // routeInformationParser: GetInformationParser(
+      //   initialRoute: Routes.homeRoute,
+      // ),
+      // routerDelegate: GetDelegate(),
+      initialRoute: Routes.homeRoute,
+      getPages: Routes.appRoutes(),
     );
   }
 }

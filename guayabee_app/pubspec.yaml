@@ -10,6 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
   get: ^4.7.2
   openidconnect: 1.0.29
   google_fonts: ^6.2.1

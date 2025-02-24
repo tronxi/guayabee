@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class MenuItem {
   final String name;
   final IconData icon;
-  final Widget widget;
+  final String route;
 
   MenuItem({
     required this.name,
     required this.icon,
-    required this.widget,
+    required this.route
   });
 }

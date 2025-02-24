@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:guayabee_app/components/scaffold/custom_scaffold_controller.dart';
+import 'package:guayabee_app/routes.dart';
 import 'package:guayabee_app/services/auth_service.dart';
 import 'package:guayabee_app/services/logger_service.dart';
 import 'package:openidconnect/openidconnect.dart';
@@ -6,9 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 
 class AuthPage extends StatefulWidget {
-  final void Function() onLogin;
-
-  const AuthPage({super.key, required this.onLogin});
+  const AuthPage({super.key});
 
   @override
   State<AuthPage> createState() => _AuthPageState();
@@ -19,10 +19,13 @@ class _AuthPageState extends State<AuthPage> {
   AuthorizationResponse? _identity;
   Map<String, dynamic>? _userInfo;
   late final AuthService _authService;
+  final CustomScaffoldController _customScaffoldController = Get.put(
+    CustomScaffoldController(),
+  );
 
   @override
   void initState() {
-    _authService = Get.put(AuthService());
+    _authService = Get.find<AuthService>();
     _loadDiscoveryDocument();
     super.initState();
   }
@@ -74,8 +77,10 @@ class _AuthPageState extends State<AuthPage> {
       setState(() {
         _identity = response;
         _userInfo = userInfo;
-        widget.onLogin();
-        _authService.login(_identity!.accessToken);
+        _authService.login(_identity!.accessToken).then((_) {
+          _customScaffoldController.changeIndex(0);
+          Routes.change(Routes.homeRoute);
+        });
       });
     } catch (e) {
       LogService.error("$e");
