@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:guayabee_app/components/scaffold/custom_scaffold.dart';
+import 'package:guayabee_app/pages/communities_page/communities_binding.dart';
+import 'package:guayabee_app/pages/communities_page/communities_page.dart';
 import 'package:guayabee_app/pages/auth_page/auth_page.dart';
 import 'package:guayabee_app/pages/auth_page/logout_page.dart';
 import 'package:guayabee_app/pages/home_page/home_binding.dart';
@@ -11,6 +13,7 @@ class Routes {
   static const String profileRoute = "/profile";
   static const String loginRoute = "/login";
   static const String logoutRoute = "/logout";
+  static const String communities = "/communities";
 
   static appRoutes() => [
     GetPage(
@@ -32,6 +35,12 @@ class Routes {
     GetPage(
       name: logoutRoute,
       page: () => const CustomScaffold(body: LogoutPage()),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: communities,
+      binding: CommunitiesBinding(),
+      page: () => CustomScaffold(body: CommunitiesPage()),
       transition: Transition.noTransition,
     ),
   ];

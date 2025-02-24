@@ -42,11 +42,6 @@ class MyApp extends StatelessWidget {
           onError: Colors.white,
         ),
       ),
-      // initialRoute: Routes.homeRoute,
-      // routeInformationParser: GetInformationParser(
-      //   initialRoute: Routes.homeRoute,
-      // ),
-      // routerDelegate: GetDelegate(),
       initialRoute: Routes.homeRoute,
       getPages: Routes.appRoutes(),
     );

@@ -39,6 +39,7 @@ class _CustomScaffoldState extends State<CustomScaffold> {
                   ),
                 )
                 .toList(),
+        type: BottomNavigationBarType.fixed,
         currentIndex: _customScaffoldController.selectedIndex.value,
         onTap: _onItemTapped,
       );

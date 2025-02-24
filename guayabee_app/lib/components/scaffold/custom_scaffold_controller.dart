@@ -25,6 +25,11 @@ class CustomScaffoldController extends GetxController {
   void _updateMenuItems(bool isLoggedIn) {
     items.value = [
       MenuItem(name: "Main", route: Routes.homeRoute, icon: Icons.home),
+      MenuItem(
+        name: "Communities",
+        route: Routes.communities,
+        icon: Icons.group,
+      ),
       MenuItem(name: "Profile", route: Routes.profileRoute, icon: Icons.person),
       if (!isLoggedIn)
         MenuItem(name: "Login", icon: Icons.login, route: Routes.loginRoute),

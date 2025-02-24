@@ -9,7 +9,6 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
       builder: (controller) {
-        controller.retrieve();
         return Text("Home");
       },
     );
