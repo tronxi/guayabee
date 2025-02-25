@@ -25,6 +25,7 @@ services:
   guayabee-core:
     container_name: guayabee-core
     image: guayabee-core:latest
+    env_file: .env.prod
     build:
       context: ../gauyabee-core
       dockerfile: dockerfile
