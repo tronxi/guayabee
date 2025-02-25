@@ -1,38 +1,49 @@
 class Community {
-  int? id;
-  String? name;
-  String? description;
+  final int id;
+  final String name;
+  final String? description;
   String? imageUrl;
-  int? members;
+  final int members;
 
   Community({
-    this.id,
-    this.name,
+    required this.id,
+    required this.name,
     this.description,
     this.imageUrl,
-    this.members,
+    required this.members,
   });
 
-  Community.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    description = json['description'];
-    imageUrl = json['imageUrl'];
-    members = json['members'];
+  factory Community.fromJson(Map<String, dynamic> json) {
+    return Community(
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+      imageUrl: json['imageUrl'],
+      members: json['members'],
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['description'] = description;
-    data['imageUrl'] = imageUrl;
-    data['members'] = members;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'description': description,
+    'imageUrl': imageUrl,
+    'members': members,
+  };
 
   @override
   String toString() {
     return 'Community{id: $id, name: $name, description: $description, imageUrl: $imageUrl, members: $members}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Community &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode;
 }

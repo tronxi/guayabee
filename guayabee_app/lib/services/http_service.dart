@@ -33,6 +33,14 @@ class HttpService extends GetxService {
     return await _handleRequest(() => _callGetApiList(path, fromJson));
   }
 
+  Future<T> post<T>(
+    String path,
+    Map<String, dynamic> data,
+    T Function(Map<String, dynamic>) fromJson,
+  ) async {
+    return await _handleRequest(() => _callPostApi(path, data, fromJson));
+  }
+
   Future<R> _handleRequest<R>(Future<R> Function() requestFunction) async {
     try {
       return await requestFunction();
@@ -67,6 +75,27 @@ class HttpService extends GetxService {
     try {
       var options = await retrieveHeaders();
       var response = await dio.get("$url$path", options: options);
+
+      if (response.statusCode == 200) {
+        return fromJson(response.data);
+      }
+
+      throw _handleHttpError(response.statusCode);
+    } on dio_p.DioException catch (e) {
+      throw _handleHttpError(e.response?.statusCode);
+    } catch (e) {
+      throw ClientException("$e");
+    }
+  }
+
+  Future<T> _callPostApi<T>(
+    String path,
+    Map<String, dynamic> data,
+    T Function(Map<String, dynamic>) fromJson,
+  ) async {
+    try {
+      var options = await retrieveHeaders();
+      var response = await dio.post("$url$path", data: data, options: options);
 
       if (response.statusCode == 200) {
         return fromJson(response.data);

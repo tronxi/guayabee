@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:guayabee_app/models/community.dart';
+import 'package:guayabee_app/services/auth_service.dart';
 import 'package:guayabee_app/services/http_service.dart';
 
 class CommunitiesController extends GetxController {
   final HttpService _httpService = Get.put(HttpService());
+  final AuthService _authService = Get.put(AuthService());
   RxList<Community> allCommunities = <Community>[].obs;
   RxList<Community> followingCommunities = <Community>[].obs;
 
@@ -11,7 +13,9 @@ class CommunitiesController extends GetxController {
   void onInit() {
     super.onInit();
     retrieveAll();
-    retrieveFollowing();
+    if (_authService.isLoggedIn.value) {
+      retrieveFollowing();
+    }
   }
 
   void retrieveAll() async {

@@ -8,9 +8,9 @@ spring:
           issuer-uri: https://tronxi.ddns.net/auth/realms/guayabee
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
   datasource:
-    url: jdbc:postgresql://localhost:5432/guayabee
-    username:
-    password:
+    url: jdbc:postgresql://${DB_URL}:5432/guayabee
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update

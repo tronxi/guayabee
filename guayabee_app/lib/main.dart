@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:guayabee_app/services/http_service.dart';
 import 'url_strategy/web_url_strategy.dart'
     if (dart.library.io) 'url_strategy/web_url_strategy_stub.dart';
 import 'package:get/get.dart';
@@ -18,6 +19,7 @@ void main() async {
   await GetStorage.init();
   await dotenv.load(fileName: "environments/.env");
   await Get.putAsync<AuthService>(() async => AuthService().init());
+  await Get.putAsync<HttpService>(() async => HttpService());
   runApp(MyApp());
 }
 

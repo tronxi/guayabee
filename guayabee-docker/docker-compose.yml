@@ -22,5 +22,16 @@ services:
     networks:
       - guayabee-net
 
+  guayabee-core:
+    container_name: guayabee-core
+    image: guayabee-core:latest
+    build:
+      context: ../gauyabee-core
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - guayabee-net
+
 networks:
   guayabee-net:
