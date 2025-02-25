@@ -24,6 +24,7 @@ services:
 
   guayabee-core:
     container_name: guayabee-core
+    platform: linux/amd64
     image: guayabee-core:latest
     env_file: .env.prod
     build:
