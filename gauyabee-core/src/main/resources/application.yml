@@ -5,7 +5,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://tronxi.ddns.net/auth/realms/guayabee
+          issuer-uri: ${KEYCLOAK_URL}
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
   datasource:
     url: jdbc:postgresql://${DB_URL}:5432/guayabee
