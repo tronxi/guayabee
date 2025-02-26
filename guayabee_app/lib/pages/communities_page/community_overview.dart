@@ -44,9 +44,20 @@ class CommunityOverview extends StatelessWidget {
                       )
                       : const Icon(Icons.group, size: 50, color: Colors.blue),
             ),
-            title: Text(
-              community.name,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            title: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: community.name,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  TextSpan(
+                    text: "\n${community.members} members",
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+              textAlign: TextAlign.left,
             ),
             subtitle: Text(
               community.description ?? "",
@@ -54,6 +65,7 @@ class CommunityOverview extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(color: Colors.grey[600]),
             ),
+            isThreeLine: true,
             trailing: ElevatedButton(
               onPressed: _onJoinPressed,
               style: ElevatedButton.styleFrom(

@@ -30,14 +30,14 @@ public class CommunityRepositoryPostgres implements CommunityRepository {
 
     @Override
     public List<Community> findAll() {
-        return communityRepositoryJPA.findAll().stream()
+        return communityRepositoryJPA.findAllByOrderByMembersDesc().stream()
                 .map(communityEntityMapper::toDomain)
                 .toList();
     }
 
     @Override
     public List<Community> findAllByUserId(String userId) {
-        return userCommunityRepositoryJPA.findByUserId(userId).stream()
+        return userCommunityRepositoryJPA.findByUserIdOrderByCommunityEntityMembersDesc(userId).stream()
                 .map(UserCommunityEntity::getCommunityEntity)
                 .map(communityEntityMapper::toDomain)
                 .toList();

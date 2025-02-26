@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserCommunityRepositoryJPA extends JpaRepository<UserCommunityEntity, Long> {
-    List<UserCommunityEntity> findByUserId(String userId);
+    List<UserCommunityEntity> findByUserIdOrderByCommunityEntityMembersDesc(String userId);
 
     Optional<UserCommunityEntity> findByCommunityEntityAndUserId(CommunityEntity communityEntity, String userId);
 }
