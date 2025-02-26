@@ -35,5 +35,18 @@ services:
     networks:
       - guayabee-net
 
+#  guayabee-app:
+#    container_name: guayabee-app
+#    platform: linux/amd64
+#    image: guayabee-app:latest
+#    env_file: .env.prod
+#    build:
+#      context: ../guayabee_app
+#      dockerfile: dockerfile
+#    ports:
+#      - "80:80"
+#    networks:
+#      - guayabee-net
+
 networks:
   guayabee-net:

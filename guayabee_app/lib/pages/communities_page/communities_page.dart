@@ -21,7 +21,7 @@ class CommunitiesPage extends StatelessWidget {
         child: const Icon(Icons.add, color: Colors.white),
       ),
       body: DefaultTabController(
-        length: 2,
+        length: authService.isLoggedIn.value ? 2 : 1,
         child: Column(
           children: [
             TabBar(

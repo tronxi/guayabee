@@ -17,7 +17,15 @@ void main() async {
     configureWebUrlStrategy();
   }
   await GetStorage.init();
-  await dotenv.load(fileName: "environments/.env");
+  String profile = const String.fromEnvironment(
+    "PROFILE",
+    defaultValue: "local",
+  );
+  if (profile == "prod") {
+    await dotenv.load(fileName: "environments/.env.prod");
+  } else {
+    await dotenv.load(fileName: "environments/.env");
+  }
   await Get.putAsync<AuthService>(() async => AuthService().init());
   await Get.putAsync<HttpService>(() async => HttpService());
   runApp(MyApp());
