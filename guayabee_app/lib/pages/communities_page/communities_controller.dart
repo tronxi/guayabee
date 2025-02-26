@@ -12,6 +12,10 @@ class CommunitiesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _initRetrieve();
+  }
+
+  void _initRetrieve() {
     retrieveAll();
     if (_authService.isLoggedIn.value) {
       retrieveFollowing();
@@ -30,5 +34,17 @@ class CommunitiesController extends GetxController {
       "/users/communities",
       Community.fromJson,
     );
+  }
+
+  void join(Community community) async {
+    await _httpService
+        .put("/users/communities/${community.id}", {}, (_) => {})
+        .then((_) => _initRetrieve());
+  }
+
+  void leave(Community community) async {
+    await _httpService
+        .delete("/users/communities/${community.id}", (_) => {})
+        .then((_) => _initRetrieve());
   }
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guayabee_app/models/community.dart';
+import 'package:guayabee_app/pages/communities_page/communities_controller.dart';
 
 class CommunityOverview extends StatelessWidget {
   final Community community;
   final bool isFollowing;
+  final controller = Get.find<CommunitiesController>();
 
-  const CommunityOverview({
+  CommunityOverview({
     super.key,
     required this.community,
     required this.isFollowing,
@@ -21,9 +23,7 @@ class CommunityOverview extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: () {
-            // TODO: Navegar a la página de detalles de la comunidad
-          },
+          onTap: () {},
           highlightColor: Colors.transparent,
           child: ListTile(
             leading: ClipRRect(
@@ -55,9 +55,7 @@ class CommunityOverview extends StatelessWidget {
               style: TextStyle(color: Colors.grey[600]),
             ),
             trailing: ElevatedButton(
-              onPressed: () {
-                // TODO: Llamar a API para seguir/dejar de seguir comunidad
-              },
+              onPressed: _onJoinPressed,
               style: ElevatedButton.styleFrom(
                 backgroundColor:
                     isFollowing
@@ -75,5 +73,13 @@ class CommunityOverview extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onJoinPressed() {
+    if (isFollowing) {
+      controller.leave(community);
+    } else {
+      controller.join(community);
+    }
   }
 }

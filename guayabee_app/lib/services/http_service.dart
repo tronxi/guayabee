@@ -26,6 +26,13 @@ class HttpService extends GetxService {
     return await _handleRequest(() => _callGetApi(path, fromJson));
   }
 
+  Future<T?> delete<T>(
+    String path,
+    T Function(Map<String, dynamic>) fromJson,
+  ) async {
+    return await _handleRequest(() => _callDeleteApi(path, fromJson));
+  }
+
   Future<List<T>> getList<T>(
     String path,
     T Function(Map<String, dynamic>) fromJson,
@@ -39,6 +46,14 @@ class HttpService extends GetxService {
     T Function(Map<String, dynamic>) fromJson,
   ) async {
     return await _handleRequest(() => _callPostApi(path, data, fromJson));
+  }
+
+  Future<T?> put<T>(
+    String path,
+    Map<String, dynamic> data,
+    T Function(Map<String, dynamic>) fromJson,
+  ) async {
+    return await _handleRequest(() => _callPutApi(path, data, fromJson));
   }
 
   Future<R> _handleRequest<R>(Future<R> Function() requestFunction) async {
@@ -88,6 +103,31 @@ class HttpService extends GetxService {
     }
   }
 
+  Future<T?> _callDeleteApi<T>(
+    String path,
+    T Function(Map<String, dynamic>) fromJson,
+  ) async {
+    try {
+      var options = await retrieveHeaders();
+      var response = await dio.delete("$url$path", options: options);
+
+      if (response.statusCode == 200) {
+        if (response.data == null || response.data == '') {
+          return null;
+        }
+        if (response.data is Map<String, dynamic>) {
+          return fromJson(response.data);
+        }
+      }
+
+      throw _handleHttpError(response.statusCode);
+    } on dio_p.DioException catch (e) {
+      throw _handleHttpError(e.response?.statusCode);
+    } catch (e) {
+      throw ClientException("$e");
+    }
+  }
+
   Future<T> _callPostApi<T>(
     String path,
     Map<String, dynamic> data,
@@ -98,6 +138,33 @@ class HttpService extends GetxService {
       var response = await dio.post("$url$path", data: data, options: options);
 
       if (response.statusCode == 200) {
+        return fromJson(response.data);
+      }
+
+      throw _handleHttpError(response.statusCode);
+    } on dio_p.DioException catch (e) {
+      throw _handleHttpError(e.response?.statusCode);
+    } catch (e) {
+      throw ClientException("$e");
+    }
+  }
+
+  Future<T?> _callPutApi<T>(
+    String path,
+    Map<String, dynamic> data,
+    T Function(Map<String, dynamic>) fromJson,
+  ) async {
+    try {
+      var options = await retrieveHeaders();
+      var response = await dio.put("$url$path", data: data, options: options);
+
+      if (response.statusCode == 200) {
+        if (response.data == null || response.data == '') {
+          return null;
+        }
+        if (response.data is Map<String, dynamic>) {
+          return fromJson(response.data);
+        }
         return fromJson(response.data);
       }
 
