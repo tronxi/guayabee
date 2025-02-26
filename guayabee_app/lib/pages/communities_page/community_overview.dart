@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guayabee_app/models/community.dart';
 import 'package:guayabee_app/pages/communities_page/communities_controller.dart';
+import 'package:guayabee_app/services/auth_service.dart';
 
 class CommunityOverview extends StatelessWidget {
   final Community community;
   final bool isFollowing;
   final controller = Get.find<CommunitiesController>();
+  final authService = Get.find<AuthService>();
 
   CommunityOverview({
     super.key,
@@ -66,21 +68,24 @@ class CommunityOverview extends StatelessWidget {
               style: TextStyle(color: Colors.grey[600]),
             ),
             isThreeLine: true,
-            trailing: ElevatedButton(
-              onPressed: _onJoinPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    isFollowing
-                        ? Colors.grey
-                        : Theme.of(context).colorScheme.primary,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-              ),
-              child: Text(isFollowing ? "Unfollow" : "Follow"),
-            ),
+            trailing:
+                authService.isLoggedIn.value
+                    ? ElevatedButton(
+                      onPressed: _onJoinPressed,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            isFollowing
+                                ? Colors.grey
+                                : Theme.of(context).colorScheme.primary,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                      ),
+                      child: Text(isFollowing ? "Unfollow" : "Follow"),
+                    )
+                    : null,
           ),
         ),
       ),
