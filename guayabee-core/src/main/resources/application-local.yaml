@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: guayabee-core
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9090/realms/guayabee
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+  datasource:
+    url: jdbc:postgresql://localhost:5432/guayabee
+    username: guayabeeuser
+    password: guayabeepass
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+jwt:
+  auth:
+    converter:
+      resource-id: client-test
+      principal-attribute: sub

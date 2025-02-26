@@ -1,0 +1,28 @@
+package dev.tronxi.guayabeecore.domain.usecases;
+
+import dev.tronxi.guayabeecore.domain.models.Community;
+import dev.tronxi.guayabeecore.domain.persistence.CommunityRepository;
+import dev.tronxi.guayabeecore.domain.services.CommunityRetriever;
+import dev.tronxi.guayabeecore.domain.services.UserInCommunityChecker;
+import org.springframework.stereotype.Service;
+
+@Service
+public class LeaveCommunityUseCase {
+    private final CommunityRepository communityRepository;
+    private final CommunityRetriever communityRetriever;
+    private final UserInCommunityChecker userInCommunityChecker;
+
+    public LeaveCommunityUseCase(CommunityRepository communityRepository, CommunityRetriever communityRetriever, UserInCommunityChecker userInCommunityChecker) {
+        this.communityRepository = communityRepository;
+        this.communityRetriever = communityRetriever;
+        this.userInCommunityChecker = userInCommunityChecker;
+    }
+
+    public void leaveCommunity(Long communityId, String userId) {
+        Community community = communityRetriever.retrieveCommunityByIdOrThrow(communityId);
+        userInCommunityChecker.validateNotMemberOrThrow(community, userId);
+        Community communityWithoutNewMember = community.decrementMembers();
+        Community updatedCommunity = communityRepository.update(communityWithoutNewMember);
+        communityRepository.leaveCommunity(updatedCommunity, userId);
+    }
+}
