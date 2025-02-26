@@ -22,7 +22,8 @@ class _CustomScaffoldState extends State<CustomScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: isDesktop(context) ? _buildWebAppBar() : null,
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar:
+          !isDesktop(context) ? _buildBottomNavigationBar() : null,
       body: SafeArea(child: widget.body),
     );
   }
@@ -57,18 +58,39 @@ class _CustomScaffoldState extends State<CustomScaffold> {
       child: Obx(
         () => AppBar(
           title: const Text('Guayabee'),
+          backgroundColor: Colors.grey[900],
           automaticallyImplyLeading: false,
           actions:
-              _customScaffoldController.items
-                  .asMap()
-                  .entries
-                  .map(
-                    (entry) => TextButton(
-                      onPressed: () => _onItemTapped(entry.key),
-                      child: Text(entry.value.name),
+              _customScaffoldController.items.asMap().entries.map((entry) {
+                final isSelected =
+                    _customScaffoldController.selectedIndex.value == entry.key;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: TextButton(
+                    onPressed: () => _onItemTapped(entry.key),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      backgroundColor:
+                          isSelected
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.transparent,
+                      foregroundColor:
+                          isSelected ? Colors.white : Colors.grey[300],
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
-                  )
-                  .toList(),
+                    child: Text(entry.value.name),
+                  ),
+                );
+              }).toList(),
         ),
       ),
     );
