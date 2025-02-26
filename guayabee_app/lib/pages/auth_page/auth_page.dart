@@ -77,10 +77,12 @@ class _AuthPageState extends State<AuthPage> {
       setState(() {
         _identity = response;
         _userInfo = userInfo;
-        _authService.login(_identity!.accessToken, _identity!.refreshToken).then((_) {
-          _customScaffoldController.changeIndex(0);
-          Routes.change(Routes.homeRoute);
-        });
+        _authService
+            .login(_identity!.accessToken, _identity!.refreshToken)
+            .then((_) {
+              _customScaffoldController.changeIndex(0);
+              Routes.change(Routes.homeRoute);
+            });
       });
     } catch (e) {
       LogService.error("$e");

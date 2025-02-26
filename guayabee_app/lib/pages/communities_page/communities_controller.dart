@@ -15,21 +15,21 @@ class CommunitiesController extends GetxController {
     _initRetrieve();
   }
 
-  void _initRetrieve() {
-    retrieveAll();
+  void _initRetrieve() async {
     if (_authService.isLoggedIn.value) {
-      retrieveFollowing();
+      await retrieveFollowing();
     }
+    retrieveAll();
   }
 
-  void retrieveAll() async {
+  Future<void> retrieveAll() async {
     allCommunities.value = await _httpService.getList(
       "/communities",
       Community.fromJson,
     );
   }
 
-  void retrieveFollowing() async {
+  Future<void> retrieveFollowing() async {
     followingCommunities.value = await _httpService.getList(
       "/users/communities",
       Community.fromJson,
