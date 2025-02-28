@@ -1,0 +1,24 @@
+meta {
+  name: create post
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/posts
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+    "communityId": 1,
+    "name": "FlutterDev community",
+    "description": "A community for the publishing of news and discussion about Flutter.",
+    "imageUrl": "url"
+  }
+}

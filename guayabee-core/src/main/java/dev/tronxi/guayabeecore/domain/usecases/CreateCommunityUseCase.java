@@ -1,6 +1,6 @@
 package dev.tronxi.guayabeecore.domain.usecases;
 
-import dev.tronxi.guayabeecore.domain.DomainException;
+import dev.tronxi.guayabeecore.domain.exceptions.DomainException;
 import dev.tronxi.guayabeecore.domain.models.Community;
 import dev.tronxi.guayabeecore.domain.models.CreateCommunityOrder;
 import dev.tronxi.guayabeecore.domain.persistence.CommunityRepository;

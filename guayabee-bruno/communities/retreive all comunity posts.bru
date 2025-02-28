@@ -1,0 +1,11 @@
+meta {
+  name: retreive all comunity posts
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/communities/0/posts
+  body: json
+  auth: none
+}
