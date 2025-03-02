@@ -1,6 +1,6 @@
 # Guayabee
 
-**Guayabee** is an open-source online platform where users can create and join communities, share posts, and receive personalized recommendations.
+**Guayabee** is an open-source, self-hosted online platform where users can create and join communities, share posts, and receive personalized recommendations.
 
 ## Features
 
@@ -9,3 +9,4 @@
 - **Personalized Recommendations** – Discover content tailored to your interests.
 - **Notifications** – Stay updated on new interactions and topics you follow.
 - **Open Source** – Contribute, modify, and enhance the platform with the community.
+- **Self-Hosted** – Deploy your own instance and customize it to your needs.
