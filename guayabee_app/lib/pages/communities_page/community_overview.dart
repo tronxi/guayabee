@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guayabee_app/models/community.dart';
 import 'package:guayabee_app/pages/communities_page/communities_controller.dart';
+import 'package:guayabee_app/routes.dart';
 import 'package:guayabee_app/services/auth_service.dart';
 
 class CommunityOverview extends StatelessWidget {
@@ -25,7 +26,11 @@ class CommunityOverview extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Routes.change(
+              "${Routes.communityPosts}?communityId=${community.id}&communityName=${community.name}",
+            );
+          },
           highlightColor: Colors.transparent,
           child: ListTile(
             leading: ClipRRect(

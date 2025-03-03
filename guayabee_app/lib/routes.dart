@@ -4,6 +4,8 @@ import 'package:guayabee_app/pages/communities_page/communities_binding.dart';
 import 'package:guayabee_app/pages/communities_page/communities_page.dart';
 import 'package:guayabee_app/pages/auth_page/auth_page.dart';
 import 'package:guayabee_app/pages/auth_page/logout_page.dart';
+import 'package:guayabee_app/pages/community_posts/community_posts_binding.dart';
+import 'package:guayabee_app/pages/community_posts/community_posts_page.dart';
 import 'package:guayabee_app/pages/create_community_page/create_community_binding.dart';
 import 'package:guayabee_app/pages/create_community_page/create_community_page.dart';
 import 'package:guayabee_app/pages/home_page/home_binding.dart';
@@ -17,6 +19,7 @@ class Routes {
   static const String logoutRoute = "/logout";
   static const String communities = "/communities";
   static const String createCommunity = "/createCommunity";
+  static const String communityPosts = "/communityPosts";
 
   static appRoutes() => [
     GetPage(
@@ -50,6 +53,12 @@ class Routes {
       name: createCommunity,
       binding: CreateCommunityBinding(),
       page: () => CustomScaffold(body: CreateCommunityPage()),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: communityPosts,
+      binding: CommunityPostsBinding(),
+      page: () => CustomScaffold(body: CommunityPostsPage()),
       transition: Transition.noTransition,
     ),
   ];
