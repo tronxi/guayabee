@@ -17,7 +17,6 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   OpenIdConfiguration? _discoveryDocument;
   AuthorizationResponse? _identity;
-  Map<String, dynamic>? _userInfo;
   late final AuthService _authService;
   final CustomScaffoldController _customScaffoldController = Get.put(
     CustomScaffoldController(),
@@ -76,9 +75,12 @@ class _AuthPageState extends State<AuthPage> {
 
       setState(() {
         _identity = response;
-        _userInfo = userInfo;
         _authService
-            .login(_identity!.accessToken, _identity!.refreshToken)
+            .loginWithUserInfo(
+              _identity!.accessToken,
+              _identity!.refreshToken,
+              userInfo,
+            )
             .then((_) {
               _customScaffoldController.changeIndex(0);
               Routes.change(Routes.homeRoute);

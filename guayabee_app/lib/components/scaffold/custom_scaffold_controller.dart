@@ -30,7 +30,12 @@ class CustomScaffoldController extends GetxController {
         route: Routes.communities,
         icon: Icons.group,
       ),
-      MenuItem(name: "Profile", route: Routes.profileRoute, icon: Icons.person),
+      if (isLoggedIn)
+        MenuItem(
+          name: "Profile",
+          route: Routes.profileRoute,
+          icon: Icons.person,
+        ),
       if (!isLoggedIn)
         MenuItem(name: "Login", icon: Icons.login, route: Routes.loginRoute),
       if (isLoggedIn)
